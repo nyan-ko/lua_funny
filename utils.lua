@@ -78,8 +78,8 @@ function try_back()
 end
 
 function move_chunks(n)
-    for 1,n do
-        for 1,16 do
+    for i=1,n do
+        for j=1,16 do
             if try_forward() == returnStatuses.FATAL then
                 return returnStatuses.FATAL
             end
@@ -145,7 +145,14 @@ function setup_digminer()
     turtle.select(import_slot)
     turtle.placeUp()
 
+    try_forward()
+    try_up()
+    try_up()
+    try_up()
     try_back()
+    try_back()
+    try_back()
+    -- ends with turtle on top of digiminer, facing forward
 
     return returnStatuses.OK
 end
@@ -155,10 +162,12 @@ function check_digminer()
 end
 
 function retrieve_digminer()
-    turtle.digUp()
-    try_up()
-    turtle.dig()
-    try_up()
+    turtle.digDown()
+    try_forward()
+    try_down()
     turtle.dig()
     try_down()
+    turtle.dig()
     try_down()
+    -- should be hugging qtorp for some coal
+end
