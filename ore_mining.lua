@@ -1,6 +1,3 @@
-Globals = {}
-Globals.CUR_MINER = nil
-
 
 function main(i)
     require "utils"
@@ -13,44 +10,45 @@ function main(i)
             if setup_digminer() < 0 then
                 break
             end
-            CUR_MINER = peripheral.wrap("top")
+
+            CUR_MINER = peripheral.wrap("bottom")
             CUR_MINER.start()
             while check_digminer() do
                 os.sleep(300)
             end
             retrieve_digminer()
+            os.sleep(3)
 
             move_chunks(2)
         else
             if setup_digminer() < 0 then
                 break
             end
+
+            turtle.turnRight()
+            turtle.turnRight()
+            move_chunks(2)
+            try_down()
+            try_down()
+            turtle.digDown()
+            try_down()
+            turtle.digDown()
+            -- should have just broken the cloader
+
+            try_up()
+            try_up()
+            try_up()
+            turtle.turnRight()
+            turtle.turnRight()
+            move_chunks(2)
+
             CUR_MINER = peripheral.wrap("top")
             CUR_MINER.start()
-
-            try_down()
-            try_down()
-            turtle.turnRight()
-            turtle.turnRight()
-            move_chunks(2)
-            try_up()
-            turtle.dig()
-            try_up()
-            turtle.dig()
-
-            turtle.turnRight()
-            turtle.turnRight()
-            try_down()
-            try_down()
-            move_chunks(2)
-            try_up()
-            try_up()
-
-            CUR_MINER = peripheral.wrap("top")
             while check_digminer() do
                 os.sleep(300)
             end
             retrieve_digminer()
+            os.sleep(3)
 
             move_chunks(2)
         end
