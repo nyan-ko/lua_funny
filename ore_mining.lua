@@ -1,4 +1,3 @@
-
 function main()
     require "utils"
     require "mining_utils"
