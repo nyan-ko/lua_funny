@@ -23,6 +23,7 @@ while ready do
         end
         retrieve_digminer()
         move_chunks(2)
+        down_refuel()
     else
         if setup_digminer() > 0 then
             break
@@ -57,5 +58,6 @@ while ready do
         end
         retrieve_digminer()
         move_chunks(2)
+        down_refuel()
     end
 end
