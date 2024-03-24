@@ -1,7 +1,7 @@
 function setup_digminer()
     local miner = get_item_slot(Items.MINER)
     if miner < 0 then
-        return 1
+        return n1il
     end
     turtle.select(miner)
     turtle.placeUp()
@@ -75,7 +75,4 @@ function retrieve_digminer()
     down_refuel()
     down_refuel()
     turtle.digDown()
-    up_refuel()
-    up_refuel()
-    -- end with turtle at same position
 end
