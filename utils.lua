@@ -1,91 +1,49 @@
-Blocks ={}
-Blocks.MINER = "mekanism:digital_miner"
-Blocks.QTORP = "mekanism:quantum_entangloporter"
-Blocks.CHUNKER = "mekanism:dimensional_stabilizer"
-Blocks.IMPORTER = "mekanism:qio_importer"
-Blocks.CHEST = "quark:oak_chest"
-
-returnStatuses = {}
-returnStatuses.FATAL = -69
-returnStatuses.OK = 0
+Items ={}
+Items.MINER = "mekanism:digital_miner"
+Items.QTORP = "mekanism:quantum_entangloporter"
+Items.CHUNKER = "mekanism:dimensional_stabilizer"
+Items.IMPORTER = "mekanism:qio_importer"
+Items.CABLE = "mekanism:ultimate_universal_cable"
+Items.FUEL = "minecraft:coal"
 
 function forward_refuel()
-    if turtle.getFuelLevel() < 20 then
-        turtle.refuel()
-    end
+    check_fuel()
     return turtle.forward()
 end
 
-function try_forward()
-    if not forward_refuel() then
-        if not turtle.dig() then
-            return returnStatuses.FATAL
-        end
-        forward_refuel()
-    end
-    return returnStatuses.OK
-end
-
-function down_refuel()
-    if turtle.getFuelLevel() < 20 then
-        turtle.refuel()
-    end
-    return turtle.down()
-end
-
-function try_down()
-    if not down_refuel() then
-        if not turtle.digDown() then
-            return returnStatuses.FATAL
-        end
-        down_refuel()
-    end
-    return returnStatuses.OK
-end
-
 function up_refuel()
-    if turtle.getFuelLevel() < 20 then
-        turtle.refuel()
-    end
+    check_fuel()
     return turtle.up()
 end
 
-function try_up()
-    if not up_refuel() then
-        if not turtle.digUp() then
-            return returnStatuses.FATAL
-        end
-        up_refuel()
-    end
-    return returnStatuses.OK
+function down_refuel()
+    check_fuel()
+    return turtle.down()
 end
 
 function back_refuel()
-    if turtle.getFuelLevel() < 20 then
-        turtle.refuel()
-    end
+    check_fuel()
     return turtle.back()
 end
 
-function try_back()
-    if not back_refuel() then
-        if not turtle.dig() then
-            return returnStatuses.FATAL
+function check_fuel()
+    if turtle.getFuelLevel() < 20 then
+        local coal = get_item_slot(Items.FUEL)
+        if coal then
+            turtle.select(coal)
+            turtle.refuel()
+        else
+            return nil
         end
-        back_refuel()
     end
-    return returnStatuses.OK
 end
 
 function move_chunks(n)
     for i=1,n do
         for j=1,16 do
-            if try_forward() == returnStatuses.FATAL then
-                return returnStatuses.FATAL
-            end
+            forward_refuel()
         end
     end
-    return returnStatuses.OK
 end
 
 function get_item_slot(name)
@@ -95,79 +53,12 @@ function get_item_slot(name)
             return i
         end
     end
-    return returnStatuses.FATAL
+    return nil
 end
 
-function setup_digminer() 
-    local miner_slot = get_item_slot(Blocks.MINER)
-    if miner_slot < 0 then
-        return returnStatuses.FATAL
+function restock_fuel()
+    local coal = get_item_slot(Items.FUEL)
+    if not coal or turtle.getItemCount(coal) < 8 then
+        turtle.suckUp()
     end
-    turtle.select(miner_slot)
-    turtle.placeUp()
-
-    try_down()
-
-    local qtorp_slot = get_item_slot(Blocks.QTORP)
-    if qtorp_slot < 0 then
-        return returnStatuses.FATAL
-    end
-    turtle.select(qtorp_slot)
-    turtle.placeUp()
-
-    try_down()
-    local chunker_slot = get_item_slot(Blocks.CHUNKER)
-    if chunker_slot < 0 then
-        return returnStatuses.FATAL
-    end
-    turtle.select(chunker_slot)
-    turtle.placeUp()
-
-    try_forward()
-    try_forward()
-    try_up()
-    try_up()
-    try_up()
-
-    local chest_slot = get_item_slot(Blocks.CHEST)
-    if chest_slot < 0 then
-        return returnStatuses.FATAL
-    end
-    turtle.select(chest_slot)
-    turtle.placeUp()
-
-    try_down()
-    
-    local import_slot = get_item_slot(Blocks.IMPORTER)
-    if import_slot < 0 then
-        return returnStatuses.FATAL
-    end
-    turtle.select(import_slot)
-    turtle.placeUp()
-
-    try_forward()
-    try_up()
-    try_up()
-    try_up()
-    try_back()
-    try_back()
-    try_back()
-    -- ends with turtle on top of digiminer, facing forward
-
-    return returnStatuses.OK
-end
-
-function check_digminer()
-    return CUR_MINER.getToMine() > 0
-end
-
-function retrieve_digminer()
-    turtle.digDown()
-    try_forward()
-    try_down()
-    turtle.dig()
-    try_down()
-    turtle.dig()
-    try_down()
-    -- should be hugging qtorp for some coal
 end
