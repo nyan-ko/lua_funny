@@ -1,7 +1,7 @@
 function setup_digminer()
     local miner = get_item_slot(Items.MINER)
     if miner < 0 then
-        return n1il
+        return 1
     end
     turtle.select(miner)
     turtle.placeUp()
