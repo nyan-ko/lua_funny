@@ -2,7 +2,7 @@ function main()
     require "utils"
     require "mining_utils"
 
-    if arg[1] != nil then
+    if arg[1] ~= nil then
         for i=1,arg[1] do
             up_refuel()
         end
