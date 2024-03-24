@@ -18,7 +18,7 @@ while ready do
 
         CUR_MINER = peripheral.wrap("bottom")
         CUR_MINER.start()
-        while check_digminer() do
+        while CUR_MINER.getToMine() > 0 do
             os.sleep(5)
         end
         retrieve_digminer()
@@ -52,7 +52,7 @@ while ready do
         turtle.turnRight()
         move_chunks(2)
 
-        while check_digminer() do
+        while CUR_MINER.getToMine() > 0 do
             os.sleep(5)
         end
         retrieve_digminer()
