@@ -75,4 +75,5 @@ function retrieve_digminer()
     down_refuel()
     down_refuel()
     turtle.digDown()
+    down_refuel()
 end
