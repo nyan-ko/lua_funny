@@ -5,7 +5,7 @@ Blocks.STOP = "minecraft:bedrock"
 
 local move = 0
 if arg[1] ~= nil then
-    move = arg[1]
+    move = tonumber(arg[1])
 end
 
 while move >= 0 do
