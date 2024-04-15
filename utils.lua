@@ -6,6 +6,24 @@ Items.IMPORTER = "mekanism:qio_importer"
 Items.CABLE = "mekanism:ultimate_universal_cable"
 Items.FUEL = "minecraft:coal"
 
+function force_forward()
+    while not forward_refuel() do
+        turtle.dig()
+    end
+end
+
+function force_up()
+    while not up_refuel() do
+        turtle.digUp()
+    end
+end
+
+function force_down()
+    while not down_refuel() do
+        turtle.digDown()
+    end
+end
+
 function forward_refuel()
     check_fuel()
     return turtle.forward()
